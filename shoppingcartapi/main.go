@@ -14,15 +14,15 @@ func main() {
 	app := fiber.New()
 
 	// Middleware to check login
-	CheckLogin := func(c *fiber.Ctx) error {
-		sess, _ := store.Get(c)
-		val := sess.Get("username")
-		if val != nil {
-			return c.SendStatus(200)
-		}
+	// CheckLogin := func(c *fiber.Ctx) error {
+	// 	sess, _ := store.Get(c)
+	// 	val := sess.Get("username")
+	// 	if val != nil {
+	// 		return c.SendStatus(200)
+	// 	}
 
-		return c.SendStatus(400)
-	}
+	// 	return c.SendStatus(400)
+	// }
 
 	// controllers
 	authAPIController := controllers.InitAuthAPIController(store)
@@ -32,25 +32,25 @@ func main() {
 
 	app.Post("/login", authAPIController.Login)
 	app.Post("/register", authAPIController.Register)
-	app.Get("/logout", CheckLogin, authAPIController.Logout)
+	app.Get("/logout", authAPIController.Logout)
 
 	prod := app.Group("/api")
 	prod.Get("/", productAPIController.GetAllProduct)
-	prod.Post("/products/create", CheckLogin, productAPIController.CreateProduct)
+	prod.Post("/products/create", productAPIController.CreateProduct)
 	prod.Get("/products/detail/:id", productAPIController.DetailProduct)
-	prod.Put("/products/edit/:id", CheckLogin, productAPIController.EditProduct)
-	prod.Delete("/products/:id", CheckLogin, productAPIController.DeleteProduct)
-	prod.Get("/addtocart/:cartid/product/:productid", CheckLogin, cartAPIController.InsertToCart)
+	prod.Put("/products/edit/:id", productAPIController.EditProduct)
+	prod.Delete("/products/:id", productAPIController.DeleteProduct)
+	prod.Get("/addtocart/:cartid/product/:productid", cartAPIController.InsertToCart)
 
 	cart := app.Group("/shoppingcart")
-	cart.Get("/:cartid", CheckLogin, cartAPIController.GetShoppingCart)
+	cart.Get("/:cartid", cartAPIController.GetShoppingCart)
 
 	transaksi := app.Group("/checkout")
-	transaksi.Get("/:userid", CheckLogin, transaksiAPIController.InsertToTransaksi)
+	transaksi.Get("/:userid", transaksiAPIController.InsertToTransaksi)
 
 	history := app.Group("/history")
-	history.Get("/:userid", CheckLogin, transaksiAPIController.GetTransaksi)
-	history.Get("/detail/:transaksiid", CheckLogin, transaksiAPIController.DetailTransaksi)
+	history.Get("/:userid", transaksiAPIController.GetTransaksi)
+	history.Get("/detail/:transaksiid", transaksiAPIController.DetailTransaksi)
 
 	app.Listen(":3000")
 }

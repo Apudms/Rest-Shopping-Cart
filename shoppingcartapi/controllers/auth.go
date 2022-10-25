@@ -60,7 +60,9 @@ func (controller *AuthAPIController) Login(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.SendStatus(500)
+	return c.JSON(fiber.Map{
+		"message": "Username atau Password salah!",
+	})
 }
 
 // POST /register

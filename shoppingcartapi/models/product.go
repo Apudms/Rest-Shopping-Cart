@@ -6,11 +6,16 @@ import (
 
 type Product struct {
 	gorm.Model
-	Id         int          `json: "id" validate:"required"`
-	Name       string       `json: "name" validate:"required"`
-	Image      string       `json: "image" validate:"required"`
-	Quantity   int          `json: "quantity" validate:"required"`
-	Price      float32      `json: "price" validate:"required"`
+	// Id         int          `form: "id" json: "id" validate:"required"`
+	// Name       string       `form: "name" json: "name" validate:"required"`
+	// Image      string       `form: "image" json: "image" validate:"required"`
+	// Quantity   int          `form: "quantity" json: "quantity" validate:"required"`
+	// Price      float32      `form: "price" json: "price" validate:"required"`
+	Id         int          `form: "id" json: "id" validate:"required"`
+	Name       string       `form: "name" json: "name" validate:"required"`
+	Image      string       `form: "image" json: "image" validate:"required"`
+	Quantity   int          `form: "quantity" json: "quantity" validate:"required"`
+	Price      float32      `form: "price" json: "price" validate:"required"`
 	Carts      []*Cart      `gorm:"many2many:cart_products;"`
 	Transaksis []*Transaksi `gorm:"many2many:transaksi_products;"`
 }

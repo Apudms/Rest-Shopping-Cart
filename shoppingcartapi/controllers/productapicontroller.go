@@ -33,15 +33,14 @@ func (controller *ProductAPIController) GetAllProduct(c *fiber.Ctx) error {
 		return c.SendStatus(500) // http 500 internal server error
 	}
 
-	sess, err := controller.store.Get(c)
-	if err != nil {
-		panic(err)
-	}
-	val := sess.Get("userId")
+	// sess, err := controller.store.Get(c)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// val := sess.Get("userId")
 
 	return c.JSON(fiber.Map{
-		"status":   200,
-		"UserId":   val,
+		// "UserId":   val,
 		"Products": products,
 	})
 }
@@ -67,7 +66,7 @@ func (controller *ProductAPIController) CreateProduct(c *fiber.Ctx) error {
 			fmt.Println(file.Filename, file.Size, file.Header["Content-Type"][0])
 
 			// Save the files to disk:
-			product.Image = fmt.Sprintf("public/prod-images/%s", file.Filename)
+			product.Image = fmt.Sprintf("/public/prod-images/%s", file.Filename)
 			if err := c.SaveFile(file, fmt.Sprintf("public/prod-images/%s", file.Filename)); err != nil {
 				return err
 			}
@@ -141,7 +140,7 @@ func (controller *ProductAPIController) EditProduct(c *fiber.Ctx) error {
 			// => "tutorial.pdf" 360641 "application/pdf"
 
 			// Save the files to disk:
-			product.Image = fmt.Sprintf("public/prod-images/%s", file.Filename)
+			product.Image = fmt.Sprintf("/public/prod-images/%s", file.Filename)
 			if err := c.SaveFile(file, fmt.Sprintf("public/prod-images/%s", file.Filename)); err != nil {
 				return err
 			}
